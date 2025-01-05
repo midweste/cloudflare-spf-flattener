@@ -34,8 +34,8 @@ use CloudflareSpf\AccountFlattener;
 require __DIR__ . '/../vendor/autoload.php';
 
 $apiToken = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-$spff = new AccountFlattener($apiToken);
-$spff->addExclude('excluded-domain.com')->flatten();
+$flattener = new AccountFlattener($apiToken);
+$flattener->addExclude('excluded-domain.com')->flatten();
 
 ```
 
@@ -47,8 +47,8 @@ use CloudflareSpf\ZoneFlattener;
 require __DIR__ . '/../vendor/autoload.php';
 
 $apiToken = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-$spff = new ZoneFlattener('example.com', $apiToken);
-$spff->flatten();
+$flattener = new ZoneFlattener('example.com', $apiToken);
+$flattener->flatten();
 
 ```
 
