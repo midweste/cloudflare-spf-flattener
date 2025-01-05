@@ -1,0 +1,14 @@
+<?php
+#!/usr/bin/env php
+
+namespace CloudflareSpf;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use CloudflareSpf\Command\{AccountFlatten, ZoneFlatten};
+
+$application = new Application();
+$application->add(new AccountFlatten());
+$application->add(new ZoneFlatten());
+$application->run();

@@ -1,0 +1,167 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CloudflareSpf;
+
+use CloudflareSpf\Trait\{CloudflareApi, Logger};
+use Psr\Log\LoggerInterface;
+use SpfLibFlattener\{RecordSplitter, SpfFlattener};
+
+class ZoneFlattener implements LoggerInterface
+{
+    use CloudflareApi, Logger;
+
+    private $zone;
+    private $apiToken;
+    protected $logger;
+
+    public function __construct(string $zone, string $apiToken)
+    {
+        $this->zone = $zone;
+        $this->apiToken = $apiToken;
+    }
+
+    protected function getApiToken(): string
+    {
+        return $this->apiToken;
+    }
+
+    protected function getZoneName(): string
+    {
+        return $this->zone;
+    }
+
+    protected function getZoneId(): string
+    {
+        return $this->getApiZoneId($this->getZoneName());
+    }
+
+    public function getDnsRecordsByType(string $type): object
+    {
+        return $this->getApiDns()->listRecords($this->getZoneId(), $type, '', '', 1, 5000000);
+    }
+
+    public function getDnsTxtRecords(): object
+    {
+        return $this->getDnsRecordsByType('TXT');
+    }
+
+    protected function getDnsTxtSearch(string $name = '', string $content = ''): object
+    {
+        $zone = $this->getZoneName();
+
+        $records = $this->getApiDns()->listRecords($this->getApiZoneId($zone), 'TXT', $name, $content, 1, 5000000);
+        if (count($records->result) > 1) {
+            throw new \Exception(sprintf('Multiple SPF records found using %s for domain %s', $name, $zone));
+        }
+        return count($records->result) > 0 ? current($records->result) : new \stdClass();
+    }
+
+    protected function txtRemoveQuotes(string $content): string
+    {
+        $content = trim($content);
+        if (substr($content, 0, 1) === '"' && substr($content, -1) === '"') {
+            return substr($content, 1, -1);
+        }
+        return $content;
+    }
+
+    protected function splitSpfStub(string $beginsWith = 'v=spfmaster', int $charsMax = 2048, string $pattern = 'spf#'): array
+    {
+        $zone = $this->getZoneName();
+
+        $stubSpf = $this->getDnsTxtSearch($zone, "contains:$beginsWith");
+        if (!isset($stubSpf->content)) {
+            $this->error(sprintf('No Stub SPF record found using %s for domain %s', $beginsWith, $zone));
+            return [];
+        }
+
+        $stubSpf = $this->txtRemoveQuotes($stubSpf->content);
+        // replace stub SPF record $beginsWith with v=spf1
+        $stubReplaced = str_replace($beginsWith, 'v=spf1', $stubSpf);
+
+        // flatten and split
+        $flattener = SpfFlattener::createFromText($zone, $stubReplaced);
+        $splitter = new RecordSplitter($flattener->toFlatRecord());
+        $split = $splitter->split($charsMax, $pattern . '.' . $zone);
+
+        return $split;
+    }
+
+    public function flatten(string $stubBeginsWith = 'v=spfmaster', int $charsMax = 2048, string $pattern = 'spf#'): array
+    {
+        $zone = $this->getZoneName();
+        $this->notice('Started splitting SPF records for ' . $zone);
+
+        $results = [];
+
+        $spfs = $this->splitSpfStub($stubBeginsWith, $charsMax, $pattern);
+        if (count($spfs) < 2) {
+            $this->error(sprintf('Problem splitting SPF record or record doesnt need splitting for zone %s', $zone));
+            return [];
+        }
+
+        // update/create sub spf records first
+        foreach ($spfs as $domain => $value) {
+            if ($domain === 'primary') {
+                continue;
+            }
+            $subRecord = $this->getDnsTxtSearch($domain);
+            $result = $this->addUpdateRecord($subRecord, $domain, $value);
+            if ($result === false) {
+                throw new \Exception(sprintf('Problem updating record for %s', $domain));
+            }
+            $results[$domain] = $result;
+        }
+
+        // update/create primary spf record
+        $primaryRecord = $this->getDnsTxtSearch($zone, 'contains:v=spf1');
+        $result = $this->addUpdateRecord($primaryRecord, $zone, $spfs['primary']);
+        if ($result === false) {
+            throw new \Exception('Problem updating primary SPF record');
+        }
+        $results[$zone] = $result;
+
+        $this->notice('Finished splitting SPF records for ' . $zone);
+        return $results;
+    }
+
+    protected function addUpdateRecord(object $record, string $name, string $newContent): bool
+    {
+        $zoneId = $this->getZoneId();
+
+        $this->info('Adding/Updating record for ' . $name);
+
+        // create
+        if (empty($record->id)) {
+            $result = $this->getApiDns()->addRecord($zoneId, 'TXT', $name, $newContent, 0, false);
+            $this->notice('New record created for ' . $name);
+            return $result;
+        }
+
+        // update
+        if ($record->content === $newContent) {
+            $this->debug('No change needed for ' . $name);
+            return true;
+        }
+        $this->debug('Changes detected in record for ' . $name);
+
+        $record->comment = 'DO NOT EDIT!! Autogenerated by CloudflareSpf.  Edit the stub TXT record starting with v=spfmaster';
+        $record->content = $newContent;
+        $updated = $this->getApiDns()->updateRecordDetails($zoneId, $record->id, (array) $record);
+        if (!isset($updated->success) || $updated->success !== true) {
+            $errors = [
+                'Problem updating record for ' . $name
+            ];
+            if (isset($updated->errors)) {
+                foreach ($updated->errors as $error) {
+                    $errors[] = isset($error->message) ? $error->message : 'Unknown error';
+                }
+            }
+            throw new \Exception(sprintf('Problem updating record for %s: %s', $name, implode(', ', $errors)));
+        }
+        $this->notice('Record added/updated for ' . $name);
+        return true;
+    }
+}

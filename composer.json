@@ -1,0 +1,36 @@
+{
+  "name": "midweste/cloudflare-spf-flattener",
+  "description": "A library to flatten Cloudflare records via Cloudflare API",
+  "type": "library",
+  "keywords": [
+    "spf",
+    "flattener",
+    "dns"
+  ],
+  "version": "0.1.0",
+  "homepage": "https://github.com/midweste/cloudflare-spf-flattener",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "midweste",
+      "email": "midweste@devbunker.com",
+      "homepage": "https://github.com/midweste",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "CloudflareSpf\\": "src/"
+    }
+  },
+  "require": {
+    "midweste/spf-lib-flattener": "dev-main",
+    "cloudflare/sdk": "dev-master",
+    "symfony/console": "6.4.x-dev",
+    "psr/log": "^3.0@dev"
+  },
+  "require-dev": {
+    "kint-php/kint": "^3.3"
+  },
+  "minimum-stability": "dev"
+}
