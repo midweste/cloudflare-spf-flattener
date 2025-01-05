@@ -58,6 +58,9 @@ $flattener->flatten();
 
 ```bash
 php bin/cf-spf-flattener account:flatten --api-token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+```bash
 php bin/cf-spf-flattener account:flatten --cloudflare-json=/path/to/credential/file.json
 ```
 
@@ -65,13 +68,12 @@ php bin/cf-spf-flattener account:flatten --cloudflare-json=/path/to/credential/f
 
 ```bash
 php bin/cf-spf-flattener zone:flatten example.com --api-token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+```bash
 php bin/cf-spf-flattener zone:flatten example.com --cloudflare-json=/path/to/credential/file.json
 ```
 
 ## Do you want to really say thank you?
 
 You can offer the original author of Spf-Lib that did all the heavy lifting (mlocati) a [monthly coffee](https://github.com/sponsors/mlocati) or a [one-time coffee](https://paypal.me/mlocati) :wink:
-
-```
-
-```
