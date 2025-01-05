@@ -2,7 +2,7 @@
 
 # No tests yet - Use at your own risk!
 
-Extension of the wonderful SPF-LIB-FLATTENER by me (https://github.com/midweste/spf-lib-flattener) and SPF-LIB library by mlocati (https://github.com/mlocati/spf-lib)
+Extension of the wonderful? SPF-LIB-FLATTENER by me (https://github.com/midweste/spf-lib-flattener) and SPF-LIB library by mlocati (https://github.com/mlocati/spf-lib)
 
 This PHP library allows you to:
 
