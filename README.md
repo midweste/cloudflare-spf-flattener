@@ -6,7 +6,7 @@ Extension of the wonderful? SPF-LIB-FLATTENER by me (https://github.com/midweste
 
 This PHP library allows you to:
 
-- retrieve the v=spfflat spf record from Cloudflare
+- retrieve the v=spfmaster spf record from Cloudflare
 - flatten a spf record into ips addresses
 - split a flattened spf record into primary and child spf records
 - update the root spf record (v=spf a mx include:spf1.domain.com include:spf2.domain.com -all)
@@ -14,7 +14,7 @@ This PHP library allows you to:
 
 ## Short introduction about Cloudflare SPF Flattener/Splitter
 
-This library is meant to address the issue where more than 10 lookups are present in a SPF record. It will retrieve a source spf txt record that starts with v=spfflat, flatten, and split that into 2048 character subdomain spf records with resolved ip addresses. Then it will update your primary record, and create any secondary records.
+This library is meant to address the issue where more than 10 lookups are present in a SPF record. It will retrieve a source spf txt record that starts with v=spfmaster, flatten, and split that into 2048 character subdomain spf records with resolved ip addresses. Then it will update your primary record, and create any secondary records.
 
 ## Installation
 
