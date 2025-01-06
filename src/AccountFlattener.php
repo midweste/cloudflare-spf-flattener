@@ -13,6 +13,7 @@ class AccountFlattener  implements LoggerInterface
 
     protected $apiToken;
     protected $excluded = [];
+    protected $order = [];
 
     public function __construct(string $apiToken)
     {
@@ -46,13 +47,44 @@ class AccountFlattener  implements LoggerInterface
         return $this->getApiZones()->listZones();
     }
 
+    public function setOrder(array $order): self
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+    public function addOrder(string $order): self
+    {
+        $this->order[] = $order;
+        return $this;
+    }
+
+    public function getOrder(): array
+    {
+        return array_values($this->order);
+    }
+
     public function flatten(): array
     {
         $zones = $this->getZones();
         $flattened = [];
 
-        $this->notice('Start account spf flattening');
+        $orderedZones = [];
+        foreach ($this->getOrder() as $zone) {
+            foreach ($zones->result as $zoneObj) {
+                if ($zoneObj->name === $zone) {
+                    $orderedZones[] = $zoneObj;
+                }
+            }
+        }
         foreach ($zones->result as $zone) {
+            if (!in_array($zone->name, $this->order)) {
+                $orderedZones[] = $zone;
+            }
+        }
+
+        $this->notice('Start account spf flattening');
+        foreach ($orderedZones as $zone) {
             $zoneName = $zone->name;
             if (in_array($zoneName, $this->excluded)) {
                 $this->warning(sprintf('Excluded %s.  Skipping', $zoneName));
