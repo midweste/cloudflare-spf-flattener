@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace CloudflareSpf\Command;
 
 use CloudflareSpf\AccountFlattener;
+use CloudflareSpf\Logger\MultiOutput;
+use CloudflareSpf\Command\AbstractCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
-use Symfony\Component\Console\Input\{InputInterface, InputOption};
+use Symfony\Component\Console\Input\{InputInterface, InputArgument};
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AccountFlatten extends Command
+class AccountFlatten extends AbstractCommand
 {
     protected static $defaultName = 'account:flatten';
 
@@ -19,34 +21,43 @@ class AccountFlatten extends Command
         $this
             ->setDescription('Flattens SPF records for an account.')
             ->setHelp('This command allows you to flatten SPF records for an account.')
-            ->addOption('cloudflare-json', null, InputOption::VALUE_OPTIONAL, 'Path to the Cloudflare JSON credentials file (optional)')
-            ->addOption('api-token', null, InputOption::VALUE_OPTIONAL, 'Cloudflare API token (optional)')
-            ->addOption('order', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Ordering of the SPF records (optional)');
+            ->addArgument('settings-json', InputArgument::REQUIRED, 'Path to the settings JSON file')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cloudflareJsonPath = $input->getOption('cloudflare-json');
-        $apiToken = $input->getOption('api-token');
 
-        if ($apiToken === null && $cloudflareJsonPath === null) {
-            throw new RuntimeException('Either the Cloudflare JSON file or the API token must be provided.');
+
+        try {
+            $multiLogger = new MultiOutput([$output]);
+            $flattener = new AccountFlattener($this->getApiToken($input));
+            $flattener->setLogger($multiLogger);
+
+            // channel notification loggers
+            foreach ($this->getNotificationChannels($input) as $channel) {
+                $loggerClass = sprintf('\CloudflareSpf\Logger\%s', ucfirst($channel));
+                if (!class_exists($loggerClass)) {
+                    throw new RuntimeException("Logger class not found: $loggerClass");
+                }
+                $multiLogger->addLogger(new $loggerClass($this->getNotificationChannelSettings($input, $channel)));
+            }
+
+            // excluded zones
+            foreach ($this->getZoneExclusions($input) as $exclude) {
+                $flattener->addExcluded($exclude);
+            }
+
+            // ordered zones
+            foreach ($this->getZoneOrdering($input) as $order) {
+                $flattener->addOrder($order);
+            }
+
+            $flattener->flatten();
+            return Command::SUCCESS;
+        } catch (\Throwable $e) {
+            $multiLogger->critical(sprintf('%s in %s on %d %s', $e->getMessage(), $e->getFile(), $e->getLine(), PHP_EOL . $e->getTraceAsString()));
+            return Command::FAILURE;
         }
-
-        if ($apiToken === null) {
-            $creds = json_decode(file_get_contents($cloudflareJsonPath), true);
-            $apiToken = $creds['api_token'];
-        }
-
-        $spff = new AccountFlattener($apiToken);
-
-        $ordering = $input->getOption('order');
-        if (!empty($ordering)) {
-            $spff->setOrder($ordering);
-        }
-
-        $spff->flatten();
-
-        return Command::SUCCESS;
     }
 }

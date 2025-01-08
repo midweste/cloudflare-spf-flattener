@@ -1,3 +1,2 @@
 vendor/
-.cloudflare.cf
-cloudflare.json
+settings.json

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace CloudflareSpf\Command;
 
+use CloudflareSpf\Command\AbstractCommand;
 use CloudflareSpf\ZoneFlattener;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
-use Symfony\Component\Console\Input\{InputArgument, InputInterface, InputOption};
+use Symfony\Component\Console\Input\{InputArgument, InputInterface};
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ZoneFlatten extends Command
+class ZoneFlatten extends AbstractCommand
 {
     protected static $defaultName = 'zone:flatten';
 
@@ -19,29 +20,20 @@ class ZoneFlatten extends Command
         $this
             ->setDescription('Flattens SPF records for a domain.')
             ->setHelp('This command allows you to flatten SPF records for a specified domain...')
+            ->addArgument('settings-json', InputArgument::REQUIRED, 'Path to the settings JSON file')
             ->addArgument('domain', InputArgument::REQUIRED, 'Domain to flatten SPF records for')
-            ->addOption('cloudflare-json', null, InputOption::VALUE_OPTIONAL, 'Path to the Cloudflare JSON credentials file (optional)')
-            ->addOption('api-token', null, InputOption::VALUE_OPTIONAL, 'Cloudflare API token (optional)');
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $domain = $input->getArgument('domain');
-        $cloudflareJsonPath = $input->getOption('cloudflare-json');
-        $apiToken = $input->getOption('api-token');
-
-        if ($apiToken === null && $cloudflareJsonPath === null) {
-            throw new RuntimeException('Either the Cloudflare JSON file or the API token must be provided.');
+        if (!filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+            throw new RuntimeException('Invalid domain provided.');
         }
 
-        if ($apiToken === null) {
-            $creds = json_decode(file_get_contents($cloudflareJsonPath), true);
-            $apiToken = $creds['api_token'];
-        }
-
-        $spff = new ZoneFlattener($domain, $apiToken);
-        $spff->flatten();
-
+        $flattener = new ZoneFlattener($domain, $this->getApiToken($input));
+        $flattener->flatten();
         return Command::SUCCESS;
     }
 }

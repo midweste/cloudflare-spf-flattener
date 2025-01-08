@@ -1,0 +1,26 @@
+{
+  "api_token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "zones": {
+    "excluded": [
+      "excluded-one.com",
+      "excluded-two.com",
+    ],
+    "order": ["first-domain.com", "second-domain.com"]
+  },
+  "notifications": {
+    "enabled": true,
+    "channels": ["email"],
+    "settings": {
+      "email": {
+        "log_level": "warning",
+        "host": "smtp.mailserver.org",
+        "username": "smtp@username.com",
+        "password": "xxxxxxxxxxxxxxxxx",
+        "port": 587,
+        "ssl": "tls",
+        "from_email": "from@domain.com",
+        "to_email": "to@domain.com"
+      }
+    }
+  }
+}

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace CloudflareSpf;
 
-use CloudflareSpf\Trait\{CloudflareApi, Logger};
-use Psr\Log\LoggerInterface;
+use CloudflareSpf\Trait\{CloudflareApi, ChannelLogger, Logger};
 
-class AccountFlattener  implements LoggerInterface
+class AccountFlattener
 {
-    use CloudflareApi, Logger;
+    use CloudflareApi, ChannelLogger;
 
     protected $apiToken;
     protected $excluded = [];
@@ -91,7 +90,7 @@ class AccountFlattener  implements LoggerInterface
                 continue;
             }
             $flattener = new ZoneFlattener($zoneName, $this->getApiToken());
-            $flattener->flatten();
+            $flattener->setLogger($this->logger())->flatten();
         }
         $this->notice('Finished account spf flattening');
         return $flattened;

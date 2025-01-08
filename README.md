@@ -34,8 +34,8 @@ use CloudflareSpf\AccountFlattener;
 require __DIR__ . '/../vendor/autoload.php';
 
 $apiToken = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-$flattener = new AccountFlattener($apiToken);
-$flattener->addExclude('excluded-domain.com')->flatten();
+$account = new AccountFlattener($apiToken);
+$account->addExclude('excluded-domain.com')->addOrder('primary-domain.com')->flatten();
 
 ```
 
@@ -47,8 +47,8 @@ use CloudflareSpf\ZoneFlattener;
 require __DIR__ . '/../vendor/autoload.php';
 
 $apiToken = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-$flattener = new ZoneFlattener('example.com', $apiToken);
-$flattener->flatten();
+$zone = new ZoneFlattener('example.com', $apiToken);
+$zone->flatten();
 
 ```
 
@@ -57,21 +57,21 @@ $flattener->flatten();
 ### Flattening all account zones
 
 ```bash
-php bin/cf-spf-flattener account:flatten --api-token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+php bin/cloudflare-spf-flattener account:flatten /path/to/settings.json
 ```
 
 ```bash
-php bin/cf-spf-flattener account:flatten --cloudflare-json=/path/to/credential/file.json
+php bin/cloudflare-spf-flattener account:flatten /path/to/settings.json
 ```
 
 ### Flattening an account zone
 
 ```bash
-php bin/cf-spf-flattener zone:flatten example.com --api-token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+php bin/cloudflare-spf-flattener zone:flatten /path/to/settings.json example.com
 ```
 
 ```bash
-php bin/cf-spf-flattener zone:flatten example.com --cloudflare-json=/path/to/credential/file.json
+php bin/cloudflare-spf-flattener zone:flatten /path/to/settings.json example.com
 ```
 
 ## Do you want to really say thank you?

@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace CloudflareSpf;
 
-use CloudflareSpf\Trait\{CloudflareApi, Logger};
-use Psr\Log\LoggerInterface;
+use CloudflareSpf\Trait\{CloudflareApi, ChannelLogger, Logger};
 use SpfLibFlattener\{RecordSplitter, SpfFlattener};
 
-class ZoneFlattener implements LoggerInterface
+class ZoneFlattener
 {
-    use CloudflareApi, Logger;
+    use CloudflareApi, ChannelLogger;
 
     private $zone;
     private $apiToken;
-    protected $logger;
 
     public function __construct(string $zone, string $apiToken)
     {
@@ -73,7 +71,7 @@ class ZoneFlattener implements LoggerInterface
 
         $stubSpf = $this->getDnsTxtSearch($zone, "contains:$beginsWith");
         if (!isset($stubSpf->content)) {
-            $this->error(sprintf('No Stub SPF record found using %s for domain %s', $beginsWith, $zone));
+            $this->warning(sprintf('No Stub SPF record found using %s for domain %s', $beginsWith, $zone));
             return [];
         }
 
@@ -98,7 +96,7 @@ class ZoneFlattener implements LoggerInterface
 
         $spfs = $this->splitSpfStub($stubBeginsWith, $charsMax, $pattern);
         if (count($spfs) < 2) {
-            $this->error(sprintf('Problem splitting SPF record or record doesnt need splitting for zone %s', $zone));
+            $this->warning(sprintf('Problem splitting SPF record or record doesnt need splitting for zone %s', $zone));
             return [];
         }
 
