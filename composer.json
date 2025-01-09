@@ -19,9 +19,6 @@
     }
   ],
   "config": {
-    "platform": {
-      "php": "7.2.5"
-    },
     "optimize-autoloader": true
   },
   "autoload": {
