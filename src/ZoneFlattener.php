@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CloudflareSpf;
 
-use CloudflareSpf\Trait\{CloudflareApi, ChannelLogger, Logger};
-use SpfLibFlattener\{RecordSplitter, SpfFlattener};
+use CloudflareSpf\Traits\CloudflareApi;
+use CloudflareSpf\Traits\ChannelLogger;
+use SpfLibFlattener\RecordSplitter;
+use SpfLibFlattener\SpfFlattener;
 
 class ZoneFlattener
 {
