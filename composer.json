@@ -18,20 +18,27 @@
       "role": "Developer"
     }
   ],
+  "config": {
+    "platform": {
+      "php": "7.2.5"
+    },
+    "optimize-autoloader": true
+  },
   "autoload": {
     "psr-4": {
       "CloudflareSpf\\": "src/"
     }
   },
   "require": {
+    "php": ">=7.2.5",
     "midweste/spf-lib-flattener": "dev-main",
-    "cloudflare/sdk": "dev-master",
-    "symfony/console": "6.4.x-dev",
-    "psr/log": "^3.0@dev",
-    "phpmailer/phpmailer": "dev-master"
+    "cloudflare/sdk": "^1.0",
+    "symfony/console": "^5.0",
+    "psr/log": "^1.0",
+    "phpmailer/phpmailer": "^6.0"
   },
   "require-dev": {
-    "kint-php/kint": "^3.3"
+    "kint-php/kint": "^5.0"
   },
   "minimum-stability": "dev"
 }
