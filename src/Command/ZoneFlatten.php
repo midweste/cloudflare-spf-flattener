@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CloudflareSpf\Command;
 
 use CloudflareSpf\Command\AbstractCommand;
+use CloudflareSpf\Logger\MultiOutput;
 use CloudflareSpf\ZoneFlattener;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
@@ -27,13 +28,20 @@ class ZoneFlatten extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $domain = $input->getArgument('domain');
-        if (!filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
-            throw new RuntimeException('Invalid domain provided.');
-        }
+        $multiLogger = new MultiOutput([$output]);
+        try {
+            $domain = $input->getArgument('domain');
+            if (!filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+                throw new RuntimeException('Invalid domain provided.');
+            }
 
-        $flattener = new ZoneFlattener($domain, $this->getApiToken($input));
-        $flattener->flatten();
-        return Command::SUCCESS;
+            $flattener = new ZoneFlattener($domain, $this->getApiToken($input));
+            $flattener->setLogger($multiLogger)->flatten();
+
+            return Command::SUCCESS;
+        } catch (\Throwable $e) {
+            $multiLogger->critical(sprintf('%s in %s on %d %s', $e->getMessage(), $e->getFile(), $e->getLine(), PHP_EOL . $e->getTraceAsString()));
+            return Command::FAILURE;
+        }
     }
 }

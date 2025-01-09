@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CloudflareSpf\Trait;
+namespace CloudflareSpf\Traits;
 
 use Psr\Log\{LoggerInterface, LogLevel};
 

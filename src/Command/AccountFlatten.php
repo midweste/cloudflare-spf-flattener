@@ -27,10 +27,8 @@ class AccountFlatten extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-
+        $multiLogger = new MultiOutput([$output]);
         try {
-            $multiLogger = new MultiOutput([$output]);
             $flattener = new AccountFlattener($this->getApiToken($input));
             $flattener->setLogger($multiLogger);
 
