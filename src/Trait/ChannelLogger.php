@@ -73,7 +73,7 @@ trait ChannelLogger
         return $this->logLevels;
     }
 
-    protected function logFormatMessage(string $level, string|\Stringable $message, array $context = []): string
+    protected function logFormatMessage(string $level, string $message, array $context = []): string
     {
         $messageContext = '';
         if (!empty($context)) {

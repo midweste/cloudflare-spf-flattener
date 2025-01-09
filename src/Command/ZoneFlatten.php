@@ -28,9 +28,8 @@ class ZoneFlatten extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $multiLogger = new MultiOutput([$output]);
         try {
-            $multiLogger = new MultiOutput([$output]);
-
             $domain = $input->getArgument('domain');
             if (!filter_var($domain, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
                 throw new RuntimeException('Invalid domain provided.');

@@ -27,7 +27,7 @@ class MultiOutput extends AbstractLogger
         $this->loggers[] = $logger;
     }
 
-    protected function format(string $level, string|\Stringable $message, array $context = []): string
+    protected function format(string $level, string $message, array $context = []): string
     {
         $messageContext = '';
         if (!empty($context)) {
