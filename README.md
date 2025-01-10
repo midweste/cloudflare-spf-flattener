@@ -58,10 +58,10 @@ $zone->flatten();
 
 Copy the settings.json.example and fill in the stubs
 
--Most settings pretty self explanatory
--Ordering is there if you need to set a specific order (one domain uses include of another). Haven't tested the TTL to see if they if changes made to the first domain are reflected on the other quite yet, that't the point though.
--Email log_level is the minimum level you want notification for, generally error is fine. Change to "debug" to be notified every time.
--SSL is one of: none, tls, ssl (uses phpmailer)
+- Most settings pretty self explanatory
+- Ordering is there if you need to set a specific order (one domain uses include of another). Haven't tested the TTL to see if they if changes made to the first domain are reflected on the other quite yet, that't the point though.
+- Email log_level is the minimum level you want notification for, generally error is fine. Change to "debug" to be notified every time.
+- SSL is one of: none, tls, ssl (uses phpmailer)
 
 ```json
 {
