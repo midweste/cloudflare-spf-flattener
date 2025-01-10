@@ -54,11 +54,42 @@ $zone->flatten();
 
 ## Cli Usage
 
-### Flattening all account zones
+### Configuration
 
-```bash
-php bin/cloudflare-spf-flattener account:flatten /path/to/settings.json
+Copy the settings.json.example and fill in the stubs
+
+-Most settings pretty self explanatory
+-Ordering is there if you need to set a specific order (one domain uses include of another). Haven't tested the TTL to see if they if changes made to the first domain are reflected on the other quite yet, that't the point though.
+-Email log_level is the minimum level you want notification for, generally error is fine. Change to "debug" to be notified every time.
+-SSL is one of: none, tls, ssl (uses phpmailer)
+
+```json
+{
+  "api_token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "zones": {
+    "excluded": ["excluded-one.com", "excluded-two.com"],
+    "order": ["first-domain.com", "second-domain.com"]
+  },
+  "notifications": {
+    "enabled": true,
+    "channels": ["email"],
+    "settings": {
+      "email": {
+        "log_level": "error",
+        "host": "smtp.mailserver.org",
+        "username": "smtp@username.com",
+        "password": "xxxxxxxxxxxxxxxxx",
+        "port": 587,
+        "ssl": "tls",
+        "from_email": "from@domain.com",
+        "to_email": "to@domain.com"
+      }
+    }
+  }
+}
 ```
+
+### Flattening all account zones
 
 ```bash
 php bin/cloudflare-spf-flattener account:flatten /path/to/settings.json
@@ -70,8 +101,29 @@ php bin/cloudflare-spf-flattener account:flatten /path/to/settings.json
 php bin/cloudflare-spf-flattener zone:flatten /path/to/settings.json example.com
 ```
 
-```bash
-php bin/cloudflare-spf-flattener zone:flatten /path/to/settings.json example.com
+### Output of CLI
+
+```
+NOTICE: Start account spf flattening
+NOTICE: Started splitting SPF records for first-domain.com
+INFO: Adding/Updating record for spf1.first-domain.com
+DEBUG: No change needed for spf1.first-domain.com
+INFO: Adding/Updating record for spf2.first-domain.com
+DEBUG: No change needed for spf2.first-domain.com
+INFO: Adding/Updating record for first-domain.com
+DEBUG: No change needed for first-domain.com
+NOTICE: Finished splitting SPF records for first-domain.com
+NOTICE: Started splitting SPF records for second-domain.com
+INFO: Adding/Updating record for spf1.second-domain.com
+DEBUG: No change needed for spf1.second-domain.com
+INFO: Adding/Updating record for spf2.second-domain.com
+DEBUG: No change needed for spf2.second-domain.com
+INFO: Adding/Updating record for second-domain.com
+DEBUG: No change needed for second-domain.com
+NOTICE: Finished splitting SPF records for first-domain.com
+WARNING: Excluded excluded-one.com.  Skipping
+WARNING: Excluded excluded-two.com.  Skipping
+NOTICE: Finished account spf flattening
 ```
 
 ## Do you want to really say thank you?
