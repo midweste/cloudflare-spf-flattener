@@ -13,7 +13,7 @@ trait CloudflareApi
 {
     abstract function getApiToken(): string;
 
-    protected function getApiAdapter(): Guzzle
+    public function getApiAdapter(): Guzzle
     {
         return new Guzzle(new APIToken($this->getApiToken()));
     }
