@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace CloudflareSpf\Traits;
 
-use Psr\Log\{LoggerInterface, LogLevel};
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 trait ChannelLogger
 {
     protected $logger;
-    protected array $logs = [];
-    protected string $logLevel = LogLevel::INFO;
+    protected $logs = [];
+    protected $logLevel = LogLevel::INFO;
     // protected string $logErrorLevel = LogLevel::WARNING;
-    protected array $logLevels = [
+    protected $logLevels = [
         LogLevel::EMERGENCY => 0,
         LogLevel::ALERT => 1,
         LogLevel::CRITICAL => 2,

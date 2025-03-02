@@ -6,7 +6,8 @@ namespace CloudflareSpf\Traits;
 
 use Cloudflare\API\Adapter\Guzzle;
 use Cloudflare\API\Auth\APIToken;
-use Cloudflare\API\Endpoints\{DNS, Zones};
+use Cloudflare\API\Endpoints\DNS;
+use Cloudflare\API\Endpoints\Zones;
 
 trait CloudflareApi
 {

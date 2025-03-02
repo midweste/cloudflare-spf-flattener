@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CloudflareSpf;
 
-use CloudflareSpf\Traits\{CloudflareApi, ChannelLogger};
+use CloudflareSpf\Traits\CloudflareApi;
+use CloudflareSpf\Traits\ChannelLogger;
 
 class AccountFlattener
 {

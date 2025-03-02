@@ -37,7 +37,6 @@ class ZoneFlatten extends AbstractCommand
 
             $flattener = new ZoneFlattener($domain, $this->getApiToken($input));
             $flattener->setLogger($multiLogger)->flatten();
-
             return Command::SUCCESS;
         } catch (\Throwable $e) {
             $multiLogger->critical(sprintf('%s in %s on %d %s', $e->getMessage(), $e->getFile(), $e->getLine(), PHP_EOL . $e->getTraceAsString()));
