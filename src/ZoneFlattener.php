@@ -37,7 +37,7 @@ class ZoneFlattener
 
     public function getDnsRecordsByType(string $type): object
     {
-        return $this->getApiDns()->listRecords($this->getZoneId(), $type, '', '', 1, 5000000);
+        return $this->listRecords($this->getZoneId(), ['type' => $type], 1, 5000000);
     }
 
     public function getDnsTxtRecords(): object
@@ -45,11 +45,50 @@ class ZoneFlattener
         return $this->getDnsRecordsByType('TXT');
     }
 
-    protected function getDnsTxtSearch(string $name = '', string $content = ''): object
+    /**
+     * Api listRecords from Cloudflare SDK broken and calling deprecated methods
+     * Stand in replacement allowing for all params to be passed
+     * @see
+     * https://developers.cloudflare.com/fundamentals/api/reference/deprecations/#2025-02-21
+     */
+    public function listRecords(string $zoneID, array $params = [], int $page = 1, int $perPage = 20, string $order = '', string $direction = '', string $match = 'all'): \stdClass
+    {
+        $query = [
+            'page' => $page,
+            'per_page' => $perPage,
+            'match' => $match
+        ];
+
+        if (!empty($order)) {
+            $query['order'] = $order;
+        }
+
+        if (!empty($direction)) {
+            $query['direction'] = $direction;
+        }
+
+        $query = array_merge($query, $params);
+
+        $user = $this->getApiAdapter()->get('zones/' . $zoneID . '/dns_records', $query);
+        $body = json_decode($user->getBody()->getContents());
+
+        return (object)['result' => $body->result, 'result_info' => $body->result_info];
+    }
+
+
+    protected function getDnsTxtSearch(string $name = '', string $contains = ''): object
     {
         $zone = $this->getZoneName();
 
-        $records = $this->getApiDns()->listRecords($this->getApiZoneId($zone), 'TXT', $name, $content, 1, 5000000);
+        $params = [
+            'name' => $name,
+            'type' => 'TXT',
+        ];
+        if (!empty($contains)) {
+            $params['content.contains'] = $contains;
+        }
+
+        $records = $this->listRecords($this->getApiZoneId($zone), $params, 1, 5000000);
         if (count($records->result) > 1) {
             throw new \Exception(sprintf('Multiple SPF records found using %s for domain %s', $name, $zone));
         }
@@ -69,7 +108,7 @@ class ZoneFlattener
     {
         $zone = $this->getZoneName();
 
-        $stubSpf = $this->getDnsTxtSearch($zone, "contains:$beginsWith");
+        $stubSpf = $this->getDnsTxtSearch($zone, $beginsWith);
         if (!isset($stubSpf->content)) {
             $this->warning(sprintf('No Stub SPF record found using %s for domain %s', $beginsWith, $zone));
             return [];
@@ -114,7 +153,7 @@ class ZoneFlattener
         }
 
         // update/create primary spf record
-        $primaryRecord = $this->getDnsTxtSearch($zone, 'contains:v=spf1');
+        $primaryRecord = $this->getDnsTxtSearch($zone, 'v=spf1');
         $result = $this->addUpdateRecord($primaryRecord, $zone, $spfs['primary']);
         if ($result === false) {
             throw new \Exception('Problem updating primary SPF record');
