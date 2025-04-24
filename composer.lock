@@ -60,12 +60,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "d281ed313b989f213357e3be1a179f02196ac99b"
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d281ed313b989f213357e3be1a179f02196ac99b",
-                "reference": "d281ed313b989f213357e3be1a179f02196ac99b",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
                 "shasum": ""
             },
             "require": {
@@ -163,7 +163,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.9.2"
+                "source": "https://github.com/guzzle/guzzle/tree/7.9.3"
             },
             "funding": [
                 {
@@ -179,20 +179,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-24T11:22:20+00:00"
+            "time": "2025-03-27T13:37:11+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.x-dev",
+            "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455"
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
-                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/7c69f28996b0a6920945dd20b3857e499d9ca96c",
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c",
                 "shasum": ""
             },
             "require": {
@@ -247,7 +247,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.4"
+                "source": "https://github.com/guzzle/promises/tree/2.2.0"
             },
             "funding": [
                 {
@@ -263,7 +263,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-17T10:06:22+00:00"
+            "time": "2025-03-27T13:27:01+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -271,12 +271,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "a70f5c95fb43bc83f07c9c948baa0dc1829bf201"
+                "reference": "c2270caaabe631b3b44c85f99e5a04bbb8060d16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/a70f5c95fb43bc83f07c9c948baa0dc1829bf201",
-                "reference": "a70f5c95fb43bc83f07c9c948baa0dc1829bf201",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/c2270caaabe631b3b44c85f99e5a04bbb8060d16",
+                "reference": "c2270caaabe631b3b44c85f99e5a04bbb8060d16",
                 "shasum": ""
             },
             "require": {
@@ -364,7 +364,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.7.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.7.1"
             },
             "funding": [
                 {
@@ -380,7 +380,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T11:15:46+00:00"
+            "time": "2025-03-27T12:30:47+00:00"
         },
         {
             "name": "midweste/spf-lib-flattener",
@@ -388,12 +388,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/midweste/spf-lib-flattener.git",
-                "reference": "f57bd23f87ffacc9e1f169ca6cc79cc14b561c60"
+                "reference": "473d4c3b70201f1cb78e7e50113165edf36b8404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/midweste/spf-lib-flattener/zipball/f57bd23f87ffacc9e1f169ca6cc79cc14b561c60",
-                "reference": "f57bd23f87ffacc9e1f169ca6cc79cc14b561c60",
+                "url": "https://api.github.com/repos/midweste/spf-lib-flattener/zipball/473d4c3b70201f1cb78e7e50113165edf36b8404",
+                "reference": "473d4c3b70201f1cb78e7e50113165edf36b8404",
                 "shasum": ""
             },
             "require": {
@@ -429,7 +429,7 @@
                 "issues": "https://github.com/midweste/spf-lib-flattener/issues",
                 "source": "https://github.com/midweste/spf-lib-flattener/tree/main"
             },
-            "time": "2024-12-29T20:30:29+00:00"
+            "time": "2025-04-24T13:46:04+00:00"
         },
         {
             "name": "mlocati/idna",
@@ -524,16 +524,16 @@
         },
         {
             "name": "mlocati/ip-lib",
-            "version": "1.18.1",
+            "version": "1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlocati/ip-lib.git",
-                "reference": "08bb43b4949069c543ebdf099a6b2c322d0172ab"
+                "reference": "fd45fc3bf08ed6c7e665e2e70562082ac954afd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/08bb43b4949069c543ebdf099a6b2c322d0172ab",
-                "reference": "08bb43b4949069c543ebdf099a6b2c322d0172ab",
+                "url": "https://api.github.com/repos/mlocati/ip-lib/zipball/fd45fc3bf08ed6c7e665e2e70562082ac954afd4",
+                "reference": "fd45fc3bf08ed6c7e665e2e70562082ac954afd4",
                 "shasum": ""
             },
             "require": {
@@ -579,7 +579,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mlocati/ip-lib/issues",
-                "source": "https://github.com/mlocati/ip-lib/tree/1.18.1"
+                "source": "https://github.com/mlocati/ip-lib/tree/1.20.0"
             },
             "funding": [
                 {
@@ -591,20 +591,20 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-10-29T15:44:19+00:00"
+            "time": "2025-02-04T17:30:58+00:00"
         },
         {
             "name": "mlocati/spf-lib",
-            "version": "3.1.2",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mlocati/spf-lib.git",
-                "reference": "8a4e52bf1c9d60ba9773a590ddc416f145c4fc57"
+                "reference": "73129185330adcf783c1cb8e43af6ebb1ef9c66b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mlocati/spf-lib/zipball/8a4e52bf1c9d60ba9773a590ddc416f145c4fc57",
-                "reference": "8a4e52bf1c9d60ba9773a590ddc416f145c4fc57",
+                "url": "https://api.github.com/repos/mlocati/spf-lib/zipball/73129185330adcf783c1cb8e43af6ebb1ef9c66b",
+                "reference": "73129185330adcf783c1cb8e43af6ebb1ef9c66b",
                 "shasum": ""
             },
             "require": {
@@ -613,7 +613,6 @@
                 "php": ">=7.1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.4",
                 "symfony/yaml": "^4.4 || ^5.1"
             },
@@ -660,7 +659,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-09-09T09:05:31+00:00"
+            "time": "2025-02-27T16:24:07+00:00"
         },
         {
             "name": "phpmailer/phpmailer",
@@ -1618,12 +1617,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "60328e362d4c2c802a54fcbf04f9d3fb892b4cf8"
+                "reference": "0cc9dd0f17f61d8131e7df6b84bd344899fe2608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/60328e362d4c2c802a54fcbf04f9d3fb892b4cf8",
-                "reference": "60328e362d4c2c802a54fcbf04f9d3fb892b4cf8",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/0cc9dd0f17f61d8131e7df6b84bd344899fe2608",
+                "reference": "0cc9dd0f17f61d8131e7df6b84bd344899fe2608",
                 "shasum": ""
             },
             "require": {
@@ -1675,7 +1674,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.31.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/1.x"
             },
             "funding": [
                 {
@@ -1691,7 +1690,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-09T11:45:10+00:00"
+            "time": "2025-01-02T08:10:11+00:00"
         },
         {
             "name": "symfony/service-contracts",
