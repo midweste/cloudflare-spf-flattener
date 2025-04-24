@@ -74,7 +74,7 @@ trait ChannelLogger
         return $this->logLevels;
     }
 
-    protected function logFormatMessage(string $level, string|\Stringable $message, array $context = []): string
+    protected function logFormatMessage(string $level, string $message, array $context = []): string
     {
         $messageContext = '';
         if (!empty($context)) {
@@ -89,7 +89,7 @@ trait ChannelLogger
     /**
      * System is unusable.
      */
-    public function emergency(string|\Stringable $message, array $context = []): void
+    public function emergency($message, array $context = [])
     {
         $this->logger->log(LogLevel::EMERGENCY, $message, $context);
     }
@@ -100,7 +100,7 @@ trait ChannelLogger
      * Example: Entire website down, database unavailable, etc. This should
      * trigger the SMS alerts and wake you up.
      */
-    public function alert(string|\Stringable $message, array $context = []): void
+    public function alert($message, array $context = [])
     {
         $this->logger->log(LogLevel::ALERT, $message, $context);
     }
@@ -110,7 +110,7 @@ trait ChannelLogger
      *
      * Example: Application component unavailable, unexpected exception.
      */
-    public function critical(string|\Stringable $message, array $context = []): void
+    public function critical($message, array $context = [])
     {
         $this->logger->log(LogLevel::CRITICAL, $message, $context);
     }
@@ -119,7 +119,7 @@ trait ChannelLogger
      * Runtime errors that do not require immediate action but should typically
      * be logged and monitored.
      */
-    public function error(string|\Stringable $message, array $context = []): void
+    public function error($message, array $context = [])
     {
         $this->logger->log(LogLevel::ERROR, $message, $context);
     }
@@ -130,7 +130,7 @@ trait ChannelLogger
      * Example: Use of deprecated APIs, poor use of an API, undesirable things
      * that are not necessarily wrong.
      */
-    public function warning(string|\Stringable $message, array $context = []): void
+    public function warning($message, array $context = [])
     {
         $this->logger->log(LogLevel::WARNING, $message, $context);
     }
@@ -138,7 +138,7 @@ trait ChannelLogger
     /**
      * Normal but significant events.
      */
-    public function notice(string|\Stringable $message, array $context = []): void
+    public function notice($message, array $context = [])
     {
         $this->logger->log(LogLevel::NOTICE, $message, $context);
     }
@@ -148,7 +148,7 @@ trait ChannelLogger
      *
      * Example: User logs in, SQL logs.
      */
-    public function info(string|\Stringable $message, array $context = []): void
+    public function info($message, array $context = [])
     {
         $this->logger->log(LogLevel::INFO, $message, $context);
     }
@@ -156,7 +156,7 @@ trait ChannelLogger
     /**
      * Detailed debug information.
      */
-    public function debug(string|\Stringable $message, array $context = []): void
+    public function debug($message, array $context = [])
     {
         $this->logger->log(LogLevel::DEBUG, $message, $context);
     }

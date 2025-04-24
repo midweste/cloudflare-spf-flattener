@@ -126,7 +126,7 @@ class Email implements LoggerInterface
         return false;
     }
 
-    public function log($level, string|\Stringable $message, array $context = []): void
+    public function log($level, $message, array $context = []): void
     {
         $this->logs[] = [
             'level' => $level,
